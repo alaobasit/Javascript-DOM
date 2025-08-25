@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOM Manipulation Assignments</title>
+  <style>
+    .paragraph {
+      padding: 5px;
+    }
+    .box {
+      margin: 10px;
+      padding: 10px;
+      background: lightgray;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Assignment 1 -->
+  <h1 id="title">Original Title</h1>
+  <p class="paragraph">This is paragraph 1</p>
+  <p class="paragraph">This is paragraph 2</p>
+
+  <div>First div</div>
+  <div id="box-container">
+    <div class="box" id="replace-me">Box 1</div>
+    <div class="box">Box 2</div>
+    <div class="box">Box 3</div>
+  </div>
+
+  <!-- Paragraph for Assignment 3 remove -->
+  <p id="remove-me">This paragraph will be removed</p>
+
+  <!-- Assignment 4 image -->
+  <img id="myImage" src="./assets/images/old-image.jpg" alt="Sample Image" width="200">
+
+  <script>
+    // Assignment 1: Selecting Elements
+    document.getElementById("title").textContent = "Updated Title";
+
+    let paragraphs = document.getElementsByClassName("paragraph");
+    for (let p of paragraphs) {
+      p.style.color = "white";
+      p.style.backgroundColor = "teal";
+    }
+
+    let divs = document.getElementsByTagName("div");
+    console.log("Number of divs:", divs.length);
+
+    let firstBox = document.querySelector(".box");
+    firstBox.textContent = "I am the first box (updated)";
+
+    let allBoxes = document.querySelectorAll(".box");
+    allBoxes.forEach(box => {
+      box.style.border = "2px solid red";
+    });
+
+    // Assignment 2: Creating & Appending
+    let newParagraph = document.createElement("p");
+    newParagraph.textContent = "This is a new paragraph.";
+    document.body.appendChild(newParagraph);
+
+    let newBox = document.createElement("div");
+    newBox.className = "box";
+    newBox.textContent = "New Box";
+    document.getElementById("box-container").appendChild(newBox);
+
+    // Assignment 3: Removing & Replacing
+    let removePara = document.getElementById("remove-me");
+    removePara.parentNode.removeChild(removePara);
+
+    let oldDiv = document.getElementById("replace-me");
+    let replacementDiv = document.createElement("div");
+    replacementDiv.className = "box";
+    replacementDiv.textContent = "I replaced the old Box 1";
+    document.getElementById("box-container").replaceChild(replacementDiv, oldDiv);
+
+    // Assignment 4: Working with Attributes
+    let myImg = document.getElementById("myImage");
+    myImg.setAttribute("src", "./assets/images/new-image.jpg");
+  </script>
+
+</body>
+</html>

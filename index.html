@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript DOM & Events - Assignments</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        section {
+            margin-bottom: 40px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        input,
+        button,
+        select {
+            margin: 5px 0;
+            padding: 8px;
+        }
+
+        .valid {
+            border: 2px solid green;
+        }
+
+        .invalid {
+            border: 2px solid red;
+        }
+
+        .icon {
+            margin-left: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Assignment 1 -->
+    <section>
+        <h2>Assignment 1: Button & Events</h2>
+        <button onclick="alert('Hello World!')">Say Hello</button>
+        <button onclick="document.body.style.background='lightblue'">Change Background</button>
+
+        <p id="hoverText">Hover over me to change color</p>
+
+        <select id="colorDropdown" onchange="document.body.style.background=this.value">
+            <option value="">Select Color</option>
+            <option value="lightgreen">Light Green</option>
+            <option value="lightpink">Light Pink</option>
+            <option value="lightyellow">Light Yellow</option>
+        </select>
+    </section>
+
+    <!-- Assignment 2 -->
+    <section>
+        <h2>Assignment 2: Simple Form Validation</h2>
+        <form id="myForm">
+            <div>
+                <input type="text" id="username" placeholder="Username">
+                <i class="fa-solid fa-circle-check" id="user-ok" style="color:green;display:none"></i>
+                <i class="fa-solid fa-circle-xmark" id="user-bad" style="color:red;display:none"></i>
+            </div>
+            <div>
+                <input type="password" id="password" placeholder="Password">
+                <i class="fa-solid fa-circle-check" id="pass-ok" style="color:green;display:none"></i>
+                <i class="fa-solid fa-circle-xmark" id="pass-bad" style="color:red;display:none"></i>
+            </div>
+            <button type="submit" id="submitBtn" disabled>Submit</button>
+        </form>
+    </section>
+
+    <!-- Assignment 3 -->
+    <section>
+        <h2>Assignment 3: Counter App</h2>
+        <div id="counter">1</div>
+        <button onclick="increaseCounter()">Increase by 2</button>
+        <button onclick="decreaseCounter()">Decrease by 1</button>
+        <button onclick="resetCounter()">Reset</button>
+    </section>
+
+    <!-- Assignment 4 -->
+    <section>
+        <h2>Assignment 4: Simple Calculator</h2>
+        <input type="number" id="calc1" placeholder="First number">
+        <input type="number" id="calc2" placeholder="Second number"></br>
+        <button onclick="calculate('add')">Add</button>
+        <button onclick="calculate('sub')">Subtract</button>
+        <button onclick="calculate('mul')">Multiply</button></br>
+        <button onclick="clearCalc()">Clear</button>
+        <p id="calcResult"></p>
+    </section>
+
+    <!-- Assignment 5 -->
+    <section>
+        <h2>Assignment 5: Countdown Timer</h2>
+        <input type="number" id="secondsInput" placeholder="Enter seconds"></br>
+        <button onclick="startTimer()">Start</button>
+        <button onclick="stopTimer()">Stop</button>
+        <button onclick="resetTimer()">Reset</button>
+        <p id="timerDisplay"></p>
+    </section>
+
+    <script>
+        // Assignment 1: hover effect
+        document.getElementById("hoverText").onmouseover = function () {
+            this.style.color = "red";
+        };
+        document.getElementById("hoverText").onmouseout = function () {
+            this.style.color = "black";
+        };
+
+        // Assignment 2: form validation
+        const user = document.getElementById("username");
+        const pass = document.getElementById("password");
+        const btn = document.getElementById("submitBtn");
+
+        function validate() {
+            let u = user.value.length >= 4;
+            let p = pass.value.length >= 6;
+
+            document.getElementById("user-ok").style.display = u ? "inline" : "none";
+            document.getElementById("user-bad").style.display = u ? "none" : "inline";
+            document.getElementById("pass-ok").style.display = p ? "inline" : "none";
+            document.getElementById("pass-bad").style.display = p ? "none" : "inline";
+
+            btn.disabled = !(u && p);
+        }
+        user.addEventListener("input", validate);
+        pass.addEventListener("input", validate);
+
+        document.getElementById("myForm").addEventListener("submit", e => {
+            e.preventDefault();
+            alert("Welcome " + user.value + "! Your account has been created.");
+        });
+        // Assignment 3: counter
+        let count = 1;
+        function increaseCounter() {
+            count += 2;
+            document.getElementById("counter").textContent = count;
+        }
+        function decreaseCounter() {
+            if (count > 0) count -= 1;
+            document.getElementById("counter").textContent = count;
+        }
+        function resetCounter() {
+            count = 0;
+            document.getElementById("counter").textContent = count; 
+        }
+
+        // Assignment 4: calculator
+        function calculate(op) {
+            let a = Number(document.getElementById("calc1").value);
+            let b = Number(document.getElementById("calc2").value);
+            let result = "";
+
+            if (op === "add") result = a + " + " + b + " = " + (a + b);
+            if (op === "sub") result = a + " - " + b + " = " + (a - b);
+            if (op === "mul") result = a + " × " + b + " = " + (a * b);
+
+            document.getElementById("calcResult").textContent = result;
+        }
+        function clearCalc() {
+            document.getElementById("calc1").value = "";
+            document.getElementById("calc2").value = "";
+            document.getElementById("calcResult").textContent = "";
+        }
+
+        // Assignment 5: countdown timer
+        let timer;
+        let timeLeft;
+
+        function startTimer() {
+            timeLeft = Number(document.getElementById("secondsInput").value);
+            document.getElementById("timerDisplay").textContent = timeLeft;
+            clearInterval(timer);
+            timer = setInterval(function () {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    document.getElementById("timerDisplay").textContent = timeLeft;
+                } else {
+                    clearInterval(timer);
+                    document.getElementById("timerDisplay").textContent = "Time's up!";
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timer);
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            document.getElementById("secondsInput").value = "";
+            document.getElementById("timerDisplay").textContent = "";
+        }
+    </script>
+
+</body>
+
+</html>
